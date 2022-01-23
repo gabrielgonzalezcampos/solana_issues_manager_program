@@ -11,7 +11,12 @@ use solana_program::{
     pubkey::Pubkey,
 };
 use std::io::ErrorKind::InvalidData;
-use crate::{models::*};
+use models::*;
+
+pub fn get_initial_status() -> Vec<Issue> {
+    let mut issues = Vec::new();
+    return Issue;
+}
 
 entrypoint!(process_instruction);
 
@@ -38,7 +43,7 @@ pub fn process_instruction(
         Err(err) => {
             if err.kind() == InvalidData {
                 msg!("InvalidData so initializing account data");
-                get_init_chat_messages()
+                get_initial_status()
             } else {
                 panic!("Unknown error decoding account data {:?}", err)
             }
