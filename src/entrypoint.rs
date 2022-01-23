@@ -11,11 +11,12 @@ use solana_program::{
     pubkey::Pubkey,
 };
 use std::io::ErrorKind::InvalidData;
-use models::Issue;
+
+use crate::models::{*};
 
 pub fn get_initial_status() -> Vec<Issue> {
     let mut issues = Vec::new();
-    return Issue;
+    return issues;
 }
 
 entrypoint!(process_instruction);
