@@ -15,7 +15,7 @@ use std::io::ErrorKind::InvalidData;
 use crate::models::{*};
 
 pub fn get_initial_status() -> Vec<Issue> {
-    let mut issues = Vec::new();
+    let issues = Vec::new();
     return issues;
 }
 

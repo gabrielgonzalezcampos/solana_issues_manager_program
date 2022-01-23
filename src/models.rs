@@ -6,22 +6,22 @@ use solana_program::{
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub struct Request {
     pub endpoint: String,
-    pub requestData: String
+    pub request_data: String
 }
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub enum IssueType {
-    thrash,
-    road
+    Thrash,
+    Road
 }
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub enum IssueState {
-    processing,
-    uploaded,
-    accepted,
-    solving,
-    solved,
-    rejected,
-    error
+    Processing,
+    Uploaded,
+    Accepted,
+    Solving,
+    Solved,
+    Rejected,
+    Error
 }
 
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
@@ -29,7 +29,7 @@ pub struct Issue {
     pub title: String,
     pub description: String,
     pub reward: u64,
-    pub issueType: IssueType,
+    pub issue_type: IssueType,
     pub state: IssueState,
     pub attachments: Vec<String>
 }
