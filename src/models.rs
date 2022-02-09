@@ -29,8 +29,8 @@ pub struct Issue {
     pub title: String,
     pub description: String,
     pub reward: u64,
-    pub issue_type: IssueType,
-    pub state: IssueState,
+    pub issue_type: String,
+    pub state: String,
     pub attachments: Vec<String>
 }
 
