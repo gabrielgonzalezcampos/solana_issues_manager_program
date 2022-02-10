@@ -14,9 +14,12 @@ use std::io::ErrorKind::InvalidData;
 
 use crate::models::{*};
 
-pub fn get_initial_status() -> Vec<Issue> {
+pub fn get_initial_status() -> AccountState {
     let issues = Vec::new();
-    return issues;
+    let newAccount = AccountState {
+        issues: issues
+    };
+    return newAccount;
 }
 
 entrypoint!(process_instruction);
@@ -38,7 +41,7 @@ pub fn process_instruction(
     })?;
     msg!("Instruction_data message object {:?}", instruction_data_message);
 
-    let mut existing_data_messages = match <Vec<Issue>>::try_from_slice(&account.data.borrow_mut()) {
+    let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
 
         Ok(data) => data,
         Err(err) => {
@@ -51,9 +54,9 @@ pub fn process_instruction(
         }
     };
 
-    existing_data_messages.push(instruction_data_message);
+    existing_data_messages.issues.push(instruction_data_message);
 
-    existing_data_messages.serialize(&mut &mut account.data.borrow_mut());
+    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
     
     Ok(())
 }
