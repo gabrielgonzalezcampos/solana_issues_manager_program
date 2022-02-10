@@ -9,10 +9,12 @@ edition = "2021"
 borsh = "0.9.1"
 borsh-derive = "0.9.1"
 solana-program = "1.8.4"
+strum = "0.23"
+strum_macros = "0.23"
 
 [dev-dependencies]
-solana-program-test = "=1.8.4"
-solana-sdk = "=1.8.4"
+solana-program-test = "1.9.5"
+solana-sdk = "1.9.5"
 
 [lib]
 name = "issues"

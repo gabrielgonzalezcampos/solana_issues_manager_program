@@ -1,17 +1,17 @@
 use borsh::{BorshSerialize, BorshDeserialize};
-
-use crate::models::Issue;
+use strum_macros::EnumString;
 
 
 
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
-pub enum Request {
-    SaveIssue {
-        issue: Issue,
-    },
-    AcceptIssue {
-        address: String,
-        index: u64,
-        amount: u64,
-    }
+pub struct Request {
+    pub endpoint: String,
+    pub body: Vec<u8>
+}
+
+extern crate strum;
+#[derive(EnumString)]
+pub enum Endpoint {
+    Save,
+    Accept
 }

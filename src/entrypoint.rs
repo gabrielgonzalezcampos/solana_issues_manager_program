@@ -1,6 +1,8 @@
 #![cfg(not(feature = "no-entrypoint"))]
 
-use borsh::{ BorshDeserialize };
+use std::str::FromStr;
+
+use borsh::{ BorshDeserialize, BorshSerialize };
 use solana_program::{
     account_info::{ next_account_info, AccountInfo },
     entrypoint,
@@ -10,7 +12,7 @@ use solana_program::{
     pubkey::Pubkey,
 };
 
-use crate::{request::Request, processors::process_accept_issue};
+use crate::{request::{Request, Endpoint}, processors::process_accept_issue};
 
 use crate::{models::{*}, processors::process_save_issue};
 
@@ -40,12 +42,19 @@ pub fn process_instruction(
         ProgramError::InvalidInstructionData
     })?;
 
-    match instruction {
-        Request::SaveIssue {issue} => {
-            process_save_issue(program_id, accounts, issue)
+    let endpoint = match Endpoint::from_str(&instruction.endpoint){
+        Ok(data) => data,
+        Err() => {
+            panic!("Unknown endpoint")
+        }
+    };
+
+    match endpoint {
+        Endpoint::Save => {
+            process_save_issue(program_id, accounts, &instruction.body)
         }
 
-        Request::AcceptIssue { address, index, amount } => {
+        Endpoint::Accept => {
             return process_accept_issue(program_id, accounts)
         }
     }
