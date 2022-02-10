@@ -52,6 +52,8 @@ pub fn process_instruction(
     };
 
     existing_data_messages.push(instruction_data_message);
+
+    existing_data_messages.serialize(&mut &mut account.data.borrow_mut());
     
     Ok(())
 }
