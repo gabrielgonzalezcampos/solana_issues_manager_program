@@ -1,7 +1,4 @@
 use borsh::{ BorshDeserialize, BorshSerialize };
-use solana_program::{
-    pubkey::Pubkey,
-};
 
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub struct Request {
@@ -38,3 +35,4 @@ pub struct Issue {
 pub struct AccountState {
     pub issues: Vec<Issue>
 }
+

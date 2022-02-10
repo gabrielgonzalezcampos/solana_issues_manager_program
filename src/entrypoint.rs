@@ -1,8 +1,7 @@
 #![cfg(not(feature = "no-entrypoint"))]
 
-use borsh::{ BorshDeserialize, BorshSerialize };
+use borsh::{ BorshDeserialize };
 use solana_program::{
-    log::sol_log_compute_units,
     account_info::{ next_account_info, AccountInfo },
     entrypoint,
     entrypoint::ProgramResult,
@@ -10,9 +9,10 @@ use solana_program::{
     program_error::ProgramError,
     pubkey::Pubkey,
 };
-use std::io::ErrorKind::InvalidData;
 
-use crate::models::{*};
+use crate::{request::Request, processors::process_accept_issue};
+
+use crate::{models::{*}, processors::process_save_issue};
 
 pub fn get_initial_status() -> AccountState {
     let issues = Vec::new();
@@ -35,28 +35,18 @@ pub fn process_instruction(
         msg!("This account {} is not owned by this program {} and cannot be updated!", account.key, program_id);
     }
 
-    let instruction_data_message = Issue::try_from_slice(instruction_data).map_err(|err| {
+    let instruction = Request::try_from_slice(instruction_data).map_err(|err| {
         msg!("Attempt to deserialize instruction data has failed. {:?}", err);
         ProgramError::InvalidInstructionData
     })?;
-    msg!("Instruction_data message object {:?}", instruction_data_message);
 
-    let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
-
-        Ok(data) => data,
-        Err(err) => {
-            if err.kind() == InvalidData {
-                msg!("InvalidData so initializing account data");
-                get_initial_status()
-            } else {
-                panic!("Unknown error decoding account data {:?}", err)
-            }
+    match instruction {
+        Request::SaveIssue {issue} => {
+            process_save_issue(program_id, accounts, issue)
         }
-    };
 
-    existing_data_messages.issues.push(instruction_data_message);
-
-    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
-    
-    Ok(())
+        Request::AcceptIssue { address, index, amount } => {
+            return process_accept_issue(program_id, accounts)
+        }
+    }
 }

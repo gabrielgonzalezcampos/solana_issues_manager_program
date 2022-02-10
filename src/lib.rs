@@ -2,6 +2,8 @@
 mod entrypoint;
 
 mod models;
+mod processors;
+mod request;
 
 #[cfg(test)]
 mod tests {
