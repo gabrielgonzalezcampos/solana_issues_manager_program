@@ -44,7 +44,7 @@ pub fn process_instruction(
 
     let endpoint = match Endpoint::from_str(&instruction.endpoint){
         Ok(data) => data,
-        Err() => {
+        Err(_) => {
             panic!("Unknown endpoint")
         }
     };
