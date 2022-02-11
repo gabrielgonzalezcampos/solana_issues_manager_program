@@ -24,6 +24,11 @@ pub fn get_initial_status() -> AccountState {
     return newAccount;
 }
 
+pub fn get_initial_validator_status() -> Vec<String> {
+    let addresses = Vec::new();
+    return addresses;
+}
+
 entrypoint!(process_instruction);
 
 pub fn process_instruction(
