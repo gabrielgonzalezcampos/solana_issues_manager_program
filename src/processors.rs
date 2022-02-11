@@ -58,6 +58,8 @@ pub fn process_save_issue(
     msg!("VValidator:");
     msg!(&account.key.to_string());
     existing_validator_assigned_accounts.push(account.key.to_string());
+
+    existing_validator_assigned_accounts.serialize(&mut &mut validatorAccount.data.borrow_mut()[..])?;
     
     Ok(())
 }
