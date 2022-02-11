@@ -15,7 +15,7 @@ pub fn process_save_issue(
     let account = next_account_info(accounts_iter)?;
     let validatorAccount = next_account_info(accounts_iter)?;
 
-    msg!("Save start");
+    msg!("Save issue transaction received");
 
     let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
         Ok(data) => data,
@@ -29,8 +29,6 @@ pub fn process_save_issue(
         }
     };
 
-    msg!("Get data");
-
     let mut existing_validator_assigned_accounts = match <Vec<String>>::try_from_slice(&validatorAccount.data.borrow_mut()) {
         Ok(data) => data,
         Err(err) => {
@@ -42,8 +40,6 @@ pub fn process_save_issue(
             }
         }
     };
-
-    msg!("Get data2");
     let issue = Issue::try_from_slice(data).map_err(|err| {
         msg!("Attempt to deserialize instruction data has failed. {:?}", err);
         ProgramError::InvalidInstructionData
@@ -55,8 +51,6 @@ pub fn process_save_issue(
 
     existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
 
-    msg!("VValidator:");
-    msg!(&account.key.to_string());
     existing_validator_assigned_accounts.push(account.key.to_string());
 
     existing_validator_assigned_accounts.serialize(&mut &mut validatorAccount.data.borrow_mut()[..])?;
@@ -72,6 +66,8 @@ pub fn process_accept_issue(
     let accounts_iter = &mut accounts.iter();
     let account = next_account_info(accounts_iter)?;
     let validator_account = next_account_info(accounts_iter)?;
+
+    msg!("Accept issue transaction received");
 
     let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
         Ok(data) => data,
@@ -94,9 +90,8 @@ pub fn process_accept_issue(
         panic!("Validator has not enough lamports")
     }
 
-    validator_account.lamports.borrow_mut().checked_sub(issue.reward);
-    
-    account.lamports.borrow_mut().checked_add(issue.reward);
+    **validator_account.lamports.borrow_mut() = validator_account.lamports.borrow_mut().checked_sub(issue.reward)?;
+    **account.lamports.borrow_mut() = account.lamports.borrow_mut().checked_add(issue.reward)?;
 
     Ok(())
 }
