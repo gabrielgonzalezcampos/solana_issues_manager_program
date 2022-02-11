@@ -89,9 +89,9 @@ pub fn process_accept_issue(
     if validator_account.lamports() < issue.reward {
         panic!("Validator has not enough lamports")
     }
-
-    **validator_account.lamports.borrow_mut() = validator_account.lamports.borrow_mut().checked_sub(issue.reward)?;
-    **account.lamports.borrow_mut() = account.lamports.borrow_mut().checked_add(issue.reward)?;
-
+    
+    let validator_lamports = validator_account.lamports.borrow_mut().to_owned();
+    **validator_account.lamports.borrow_mut() = validator_lamports - issue.reward;
+    **account.lamports.borrow_mut() = validator_lamports + issue.reward;
     Ok(())
 }
