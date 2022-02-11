@@ -92,6 +92,7 @@ pub fn process_accept_issue(
     
     let validator_lamports = validator_account.lamports.borrow_mut().to_owned();
     **validator_account.lamports.borrow_mut() = validator_lamports - issue.reward;
-    **account.lamports.borrow_mut() = validator_lamports + issue.reward;
+    let account_lamports = account.lamports.borrow_mut().to_owned();
+    **account.lamports.borrow_mut() = account_lamports + issue.reward;
     Ok(())
 }
