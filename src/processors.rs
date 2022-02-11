@@ -15,6 +15,8 @@ pub fn process_save_issue(
     let account = next_account_info(accounts_iter)?;
     let validatorAccount = next_account_info(accounts_iter)?;
 
+    msg!("Save start");
+
     let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
         Ok(data) => data,
         Err(err) => {
@@ -26,6 +28,8 @@ pub fn process_save_issue(
             }
         }
     };
+
+    msg!("Get data");
 
     let mut existing_validator_assigned_accounts = match <Vec<String>>::try_from_slice(&validatorAccount.data.borrow_mut()) {
         Ok(data) => data,
@@ -39,10 +43,13 @@ pub fn process_save_issue(
         }
     };
 
+    msg!("Get data2");
     let issue = Issue::try_from_slice(data).map_err(|err| {
         msg!("Attempt to deserialize instruction data has failed. {:?}", err);
         ProgramError::InvalidInstructionData
     })?;
+
+    msg!("Body: {:?}", issue);
 
     existing_data_messages.issues.push(issue);
 
