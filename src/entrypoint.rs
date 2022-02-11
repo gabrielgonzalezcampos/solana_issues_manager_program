@@ -55,7 +55,7 @@ pub fn process_instruction(
         }
 
         Endpoint::Accept => {
-            return process_accept_issue(program_id, accounts)
+            return process_accept_issue(program_id, accounts, &instruction.body)
         }
     }
 }
