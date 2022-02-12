@@ -23,7 +23,7 @@ pub fn get_dummy_issue() -> Issue {
         reward: 0,
         issue_type: DUMMY__STATE_STRING.to_string(),
         state: DUMMY__STATE_STRING.to_string(),
-        attachments: Vec::new()
+        //attachments: Vec::new()
     };
     return dummy_issue;
 }

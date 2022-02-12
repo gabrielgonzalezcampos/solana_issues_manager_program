@@ -28,7 +28,7 @@ pub struct Issue {
     pub reward: u64,
     pub issue_type: String,
     pub state: String,
-    pub attachments: Vec<String>
+    //pub attachments: Vec<String>
 }
 
 
