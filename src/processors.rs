@@ -57,10 +57,6 @@ pub fn process_save_issue(
     //let data = &mut &mut account.data.borrow_mut();
     (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
 
-    /* existing_data_messages.push(issue);
-
-    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?; */
-
     msg!("Issues Saved: {:?}", existing_data_messages.len());
 
     existing_validator_assigned_accounts.push(account.key.to_string());
@@ -107,11 +103,10 @@ pub fn process_accept_issue(
 
     let reward = issue.reward.to_owned();
 
-    let index = existing_data_messages.iter().position(|p| p.title == issue.title).unwrap();
+    let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     existing_data_messages[index] = issue;
     let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
-    let data = &mut &mut account.data.borrow_mut();
-    data[..(updated_data.len())].copy_from_slice(&updated_data);
+    (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
     
     let validator_lamports = validator_account.lamports.borrow_mut().to_owned();
     **validator_account.lamports.borrow_mut() = validator_lamports - reward;

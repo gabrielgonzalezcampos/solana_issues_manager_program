@@ -1,5 +1,3 @@
-use solana_program::msg;
-
 use crate::models::Issue;
 
 pub const ISSUES_LIST_SIZE: u32 = 20;
