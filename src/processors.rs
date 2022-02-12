@@ -49,7 +49,7 @@ pub fn process_save_issue(
         ProgramError::InvalidInstructionData
     })?;
 
-    msg!("Body: {:?}", issue);
+    //msg!("Body: {:?}", issue);
 
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     msg!("Index: {:?}", index);
@@ -107,7 +107,7 @@ pub fn process_accept_issue(
 
     let reward = issue.reward.to_owned();
 
-    let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
+    let index = existing_data_messages.iter().position(|p| p.title == issue.title).unwrap();
     existing_data_messages[index] = issue;
     let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
     (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
