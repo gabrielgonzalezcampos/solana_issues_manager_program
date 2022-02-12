@@ -17,7 +17,7 @@ pub fn process_save_issue(
 
     msg!("Save issue transaction received");
 
-    let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
+    let mut existing_data_messages = match <Vec<Issue>>::try_from_slice(&account.data.borrow_mut()) {
         Ok(data) => data,
         Err(err) => {
             if err.kind() == InvalidData {
@@ -47,9 +47,9 @@ pub fn process_save_issue(
 
     msg!("Body: {:?}", issue);
 
-    msg!("Issues: {:?}", existing_data_messages.issues.len());
+    msg!("Issues: {:?}", existing_data_messages.len());
 
-    existing_data_messages.issues.push(issue);
+    existing_data_messages.push(issue);
 
     existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
 
@@ -71,7 +71,7 @@ pub fn process_accept_issue(
 
     msg!("Accept issue transaction received");
 
-    let mut existing_data_messages = match AccountState::try_from_slice(&account.data.borrow_mut()) {
+    let mut existing_data_messages = match <Vec<Issue>>::try_from_slice(&account.data.borrow_mut()) {
         Ok(data) => data,
         Err(err) => {
             if err.kind() == InvalidData {

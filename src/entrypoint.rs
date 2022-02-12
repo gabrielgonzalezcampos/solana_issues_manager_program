@@ -16,12 +16,12 @@ use crate::{request::{Request, Endpoint}, processors::process_accept_issue};
 
 use crate::{models::{*}, processors::process_save_issue};
 
-pub fn get_initial_status() -> AccountState {
+pub fn get_initial_status() -> Vec<Issue> {
     let issues = Vec::new();
-    let newAccount = AccountState {
+    /*let newAccount = AccountState {
         issues: issues
-    };
-    return newAccount;
+    };*/
+    return issues;
 }
 
 pub fn get_initial_validator_status() -> Vec<String> {
