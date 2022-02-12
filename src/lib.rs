@@ -4,6 +4,7 @@ mod entrypoint;
 mod models;
 mod processors;
 mod request;
+mod builder;
 
 #[cfg(test)]
 mod tests {

@@ -1,19 +1,20 @@
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::{pubkey::Pubkey, account_info::{AccountInfo, next_account_info}, entrypoint::ProgramResult, msg, program_error::ProgramError};
 
-use crate::{models::{AccountState, Issue}, entrypoint::{get_initial_status, get_initial_validator_status}};
-use std::{io::ErrorKind::InvalidData, cell::{RefMut, RefCell}, ops::Add};
+use std::{io::ErrorKind::InvalidData};
+
+use crate::{models::Issue, builder::{get_initial_status, get_initial_validator_status}};
 
 
 
 pub fn process_save_issue(
-    program_id: &Pubkey,
+    _program_id: &Pubkey,
     accounts: &[AccountInfo],
     data: &[u8],
 ) -> ProgramResult {
     let accounts_iter = &mut accounts.iter();
     let account = next_account_info(accounts_iter)?;
-    let validatorAccount = next_account_info(accounts_iter)?;
+    let validator_account = next_account_info(accounts_iter)?;
 
     msg!("Save issue transaction received");
 
@@ -29,7 +30,7 @@ pub fn process_save_issue(
         }
     };
 
-    let mut existing_validator_assigned_accounts = match <Vec<String>>::try_from_slice(&validatorAccount.data.borrow_mut()) {
+    let mut existing_validator_assigned_accounts = match <Vec<String>>::try_from_slice(&validator_account.data.borrow_mut()) {
         Ok(data) => data,
         Err(err) => {
             if err.kind() == InvalidData {
@@ -57,13 +58,13 @@ pub fn process_save_issue(
 
     existing_validator_assigned_accounts.push(account.key.to_string());
 
-    existing_validator_assigned_accounts.serialize(&mut &mut validatorAccount.data.borrow_mut()[..])?;
+    existing_validator_assigned_accounts.serialize(&mut &mut validator_account.data.borrow_mut()[..])?;
     
     Ok(())
 }
 
 pub fn process_accept_issue(
-    program_id: &Pubkey,
+    _program_id: &Pubkey,
     accounts: &[AccountInfo],
     data: &[u8],
 ) -> ProgramResult {
