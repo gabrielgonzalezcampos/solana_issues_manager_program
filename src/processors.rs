@@ -53,11 +53,11 @@ pub fn process_save_issue(
 
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     existing_data_messages[index] = issue;
-    let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
+    /* let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
     //let data = &mut &mut account.data.borrow_mut();
     (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
-
-    msg!("Issues Saved: {:?}", existing_data_messages.len());
+ */
+    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
 
     existing_validator_assigned_accounts.push(account.key.to_string());
 
