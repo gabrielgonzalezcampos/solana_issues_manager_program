@@ -3,7 +3,7 @@ use solana_program::{pubkey::Pubkey, account_info::{AccountInfo, next_account_in
 
 use std::{io::ErrorKind::InvalidData};
 
-use crate::{models::Issue, builder::{get_initial_status, get_initial_validator_status, DUMMY_STRING}};
+use crate::{models::Issue, builder::{get_initial_status, get_initial_validator_status, DUMMY_STRING, ISSUES_LIST_SIZE}};
 
 
 
@@ -51,7 +51,16 @@ pub fn process_save_issue(
 
     //msg!("Body: {:?}", issue);
 
-    let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
+    let mut index: usize = 0;
+    let mut prev_string: String = "".to_string();
+
+    for i in 0..ISSUES_LIST_SIZE {
+        if existing_data_messages[i as usize].title ==  String::from(DUMMY_STRING) || existing_data_messages[i as usize].title ==  prev_string {
+            index = i as usize;
+            break;
+        }
+        prev_string = existing_data_messages[i as usize].title.to_owned();
+    }
     msg!("Index: {:?}", index);
     existing_data_messages[index] = issue;
     //msg!("Index2: {:?}", existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap());// me da el 2 hasta aqui bien
