@@ -47,6 +47,8 @@ pub fn process_save_issue(
 
     msg!("Body: {:?}", issue);
 
+    msg!("Issues: {:?}", existing_data_messages.issues.len());
+
     existing_data_messages.issues.push(issue);
 
     existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
