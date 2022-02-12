@@ -22,7 +22,7 @@ pub fn process_save_issue(
         Ok(data) => data,
         Err(err) => {
             if err.kind() == InvalidData {
-                msg!("InvalidData so initializing account data {:?}", err);
+                msg!("InvalidData so initializing account data");
                 get_initial_status()
             } else {
                 panic!("Unknown error decoding account data {:?}", err)
