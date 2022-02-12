@@ -1,3 +1,5 @@
+use solana_program::msg;
+
 use crate::models::Issue;
 
 const ISSUES_LIST_SIZE: u32 = 20;
@@ -6,6 +8,7 @@ const STATE_STRING_SIZE: u32 = 16;
 
 pub fn get_initial_status() -> Vec<Issue> {
     let mut issues = Vec::new();
+    msg!("initDATA");
     /*let newAccount = AccountState {
         issues: issues
     };*/
@@ -13,6 +16,7 @@ pub fn get_initial_status() -> Vec<Issue> {
     for _ in 0..ISSUES_LIST_SIZE {
         issues.push(get_dummy_issue());
     };
+    msg!("data initialized");
     return issues;
 }
 
