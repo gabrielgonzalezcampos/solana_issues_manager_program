@@ -3,7 +3,7 @@ use solana_program::{pubkey::Pubkey, account_info::{AccountInfo, next_account_in
 
 use std::{io::ErrorKind::InvalidData};
 
-use crate::{models::Issue, builder::{get_initial_status, get_initial_validator_status}};
+use crate::{models::Issue, builder::{get_initial_status, get_initial_validator_status, DUMMY_STRING}};
 
 
 
@@ -50,9 +50,16 @@ pub fn process_save_issue(
 
     msg!("Issues: {:?}", existing_data_messages.len());
 
-    existing_data_messages.push(issue);
+    let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
+    existing_data_messages[index] = issue;
+    let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
+    let data = &mut &mut account.data.borrow_mut();
+    data[..(updated_data.len())].copy_from_slice(&updated_data);
+    <Vec<Issue>>::try_from_slice(data);
 
-    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
+    /* existing_data_messages.push(issue);
+
+    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?; */
 
     msg!("Issues Saved: {:?}", existing_data_messages.len());
 
@@ -94,10 +101,18 @@ pub fn process_accept_issue(
     if validator_account.lamports() < issue.reward {
         panic!("Validator has not enough lamports")
     }
+
+    let reward = issue.reward.to_owned();
+
+    let index = existing_data_messages.iter().position(|p| p.title == issue.title).unwrap();
+    existing_data_messages[index] = issue;
+    let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
+    let data = &mut &mut account.data.borrow_mut();
+    data[..(updated_data.len())].copy_from_slice(&updated_data);
     
     let validator_lamports = validator_account.lamports.borrow_mut().to_owned();
-    **validator_account.lamports.borrow_mut() = validator_lamports - issue.reward;
+    **validator_account.lamports.borrow_mut() = validator_lamports - reward;
     let account_lamports = account.lamports.borrow_mut().to_owned();
-    **account.lamports.borrow_mut() = account_lamports + issue.reward;
+    **account.lamports.borrow_mut() = account_lamports + reward;
     Ok(())
 }

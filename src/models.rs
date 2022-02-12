@@ -31,6 +31,7 @@ pub struct Issue {
     pub attachments: Vec<String>
 }
 
+
 #[derive(BorshSerialize, BorshDeserialize, Debug)]
 pub struct AccountState {
     pub issues: Vec<Issue>

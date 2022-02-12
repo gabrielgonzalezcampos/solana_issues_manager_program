@@ -2,15 +2,12 @@ use solana_program::msg;
 
 use crate::models::Issue;
 
-const ISSUES_LIST_SIZE: u32 = 20;
-const STRING_SIZE: u32 = 120;
-const DUMMY_STRING: &str  = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-const DUMMY__STATE_STRING: &str  = "0000000000000000";
-const STATE_STRING_SIZE: u32 = 16;
+pub const ISSUES_LIST_SIZE: u32 = 20;
+pub const DUMMY_STRING: &str  = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+pub const DUMMY__STATE_STRING: &str  = "0000000000000000";
 
 pub fn get_initial_status() -> Vec<Issue> {
     let mut issues = Vec::new();
-    msg!("initDATA");
     /*let newAccount = AccountState {
         issues: issues
     };*/
@@ -18,7 +15,6 @@ pub fn get_initial_status() -> Vec<Issue> {
     for _ in 0..ISSUES_LIST_SIZE {
         issues.push(get_dummy_issue());
     };
-    msg!("data initialized");
     return issues;
 }
 
