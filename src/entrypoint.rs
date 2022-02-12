@@ -56,7 +56,7 @@ pub fn process_instruction(
 
     match endpoint {
         Endpoint::Save => {
-            process_save_issue(program_id, accounts, &instruction.body)
+            return process_save_issue(program_id, accounts, &instruction.body)
         }
 
         Endpoint::Accept => {

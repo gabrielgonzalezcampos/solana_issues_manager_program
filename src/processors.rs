@@ -21,7 +21,7 @@ pub fn process_save_issue(
         Ok(data) => data,
         Err(err) => {
             if err.kind() == InvalidData {
-                msg!("InvalidData so initializing account data");
+                msg!("InvalidData so initializing account data {:?}", err);
                 get_initial_status()
             } else {
                 panic!("Unknown error decoding account data {:?}", err)
@@ -52,6 +52,8 @@ pub fn process_save_issue(
     existing_data_messages.push(issue);
 
     existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
+
+    msg!("Issues Saved: {:?}", existing_data_messages.len());
 
     existing_validator_assigned_accounts.push(account.key.to_string());
 
