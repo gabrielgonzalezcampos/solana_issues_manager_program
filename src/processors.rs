@@ -54,8 +54,8 @@ pub fn process_save_issue(
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     msg!("Index: {:?}", index);
     existing_data_messages[index] = issue;
-    msg!("saving: {:?}", existing_data_messages[index]);
-    msg!("{:?}", existing_data_messages[index+1]);
+    /* msg!("saving: {:?}", existing_data_messages[index]);
+    msg!("{:?}", existing_data_messages[index+1]); */
     
     /* let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
     //let data = &mut &mut account.data.borrow_mut();
