@@ -54,15 +54,17 @@ pub fn process_save_issue(
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     msg!("Index: {:?}", index);
     existing_data_messages[index] = issue;
-    msg!("Index2: {:?}", existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap());
-    /* msg!("saving: {:?}", existing_data_messages[index]);
-    msg!("{:?}", existing_data_messages[index+1]); */
+    //msg!("Index2: {:?}", existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap());// me da el 2 hasta aqui bien
+
+    // msg!("saving: {:?}", existing_data_messages[index]);
     
     /* let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
     //let data = &mut &mut account.data.borrow_mut();
     (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
  */
-    existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
+    //existing_data_messages.serialize(&mut &mut account.data.borrow_mut()[..])?;
+
+    account.data.borrow_mut().copy_from_slice(&existing_data_messages.try_to_vec().expect("Failed to save issue"));
 
     existing_validator_assigned_accounts.push(account.key.to_string());
 
