@@ -54,6 +54,7 @@ pub fn process_save_issue(
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     msg!("Index: {:?}", index);
     existing_data_messages[index] = issue;
+    msg!("Index2: {:?}", existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap());
     /* msg!("saving: {:?}", existing_data_messages[index]);
     msg!("{:?}", existing_data_messages[index+1]); */
     
