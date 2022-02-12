@@ -23,11 +23,11 @@ pub fn process_instruction(
     accounts: &[AccountInfo],
     instruction_data: &[u8]
 ) -> ProgramResult {
-    let accounts_iter = &mut accounts.iter();
+    /* let accounts_iter = &mut accounts.iter();
     let account = next_account_info(accounts_iter)?;
     if account.owner != program_id {
         msg!("This account {} is not owned by this program {} and cannot be updated!", account.key, program_id);
-    }
+    } */
 
     let instruction = Request::try_from_slice(instruction_data).map_err(|err| {
         msg!("Attempt to deserialize instruction data has failed. {:?}", err);

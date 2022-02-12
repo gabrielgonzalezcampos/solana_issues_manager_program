@@ -14,6 +14,9 @@ pub fn process_save_issue(
 ) -> ProgramResult {
     let accounts_iter = &mut accounts.iter();
     let account = next_account_info(accounts_iter)?;
+    if account.owner != _program_id {
+        msg!("This account {} is not owned by this program {} and cannot be updated!", account.key, _program_id);
+    }
     let validator_account = next_account_info(accounts_iter)?;
 
     msg!("Save issue transaction received");
@@ -48,14 +51,11 @@ pub fn process_save_issue(
 
     msg!("Body: {:?}", issue);
 
-    msg!("Issues: {:?}", existing_data_messages.len());
-
     let index = existing_data_messages.iter().position(|p| p.title == String::from(DUMMY_STRING)).unwrap();
     existing_data_messages[index] = issue;
     let updated_data = existing_data_messages.try_to_vec().expect("Failed to encode data.");
-    let data = &mut &mut account.data.borrow_mut();
-    data[..(updated_data.len())].copy_from_slice(&updated_data);
-    <Vec<Issue>>::try_from_slice(data);
+    //let data = &mut &mut account.data.borrow_mut();
+    (&mut &mut account.data.borrow_mut())[..(updated_data.len())].copy_from_slice(&updated_data);
 
     /* existing_data_messages.push(issue);
 
@@ -77,6 +77,9 @@ pub fn process_accept_issue(
 ) -> ProgramResult {
     let accounts_iter = &mut accounts.iter();
     let account = next_account_info(accounts_iter)?;
+    if account.owner != _program_id {
+        msg!("This account {} is not owned by this program {} and cannot be updated!", account.key, _program_id);
+    }
     let validator_account = next_account_info(accounts_iter)?;
 
     msg!("Accept issue transaction received");
